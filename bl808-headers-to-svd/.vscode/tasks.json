@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "svd2html bl808",
+            "command": "./target/release/svd2html",
+            "options": {
+                "cwd": "${workspaceFolder}/../svd2html/"
+            },
+            "args": [
+                "--input",
+                "${workspaceFolder}/output.svd",
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+[submodule "bl_mcu_sdk"]
+	path = bl_mcu_sdk
+	url = https://github.com/bouffalolab/bl_mcu_sdk.git
+[submodule "bl_docs"]
+	path = bl_docs
+	url = https://github.com/bouffalolab/bl_docs.git
+[submodule "M1s_BL808_SDK"]
+	path = M1s_BL808_SDK
+	url = https://github.com/sipeed/M1s_BL808_SDK.git

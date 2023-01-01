@@ -1,0 +1,39 @@
+reg_file = { SOI ~ misc* ~ peripheral }
+misc = _{ (("/*" | "#" | "*") ~ (!"\n" ~ ANY)* ~ "\n") | "\n" }
+
+peripheral = { peripheral_header ~ registers+ ~ "};" }
+peripheral_header = _{ "struct" ~ peripheral_name ~ "{" }
+peripheral_name = { (ASCII_ALPHANUMERIC | "_")* }
+
+
+registers = {
+((WHITESPACE | "\n")* ~ 
+(reserved_register | register) ~ 
+(WHITESPACE | "\n")*)+
+}
+
+register = { register_header ~ "\n" ~ "union {\n" ~ "struct" ~ "\n"? ~ "{" ~ "\n"?
+~ field+ ~ "}" ~ "BF;\n"~ ("uint32_t WORD" | "uint16_t SHORT") ~ ";\n"~"} " ~ (ASCII_ALPHANUMERIC | "_")+ ~ ";\n"
+}
+
+register_header = {" "* ~ "/* 0x" ~ address ~ ":"? ~ register_name ~ "*/"}
+address = @{ ASCII_HEX_DIGIT+ }
+register_name = { (ASCII_ALPHANUMERIC | "+" | "_" | "[" | "]" | " " | "," | "/" | "-" )+ }
+
+reserved_register = {register_header ~ "\n" ~ "uint8_t" ~ ASCII_ALPHANUMERIC+ ~ "[" ~ ASCII_DIGIT+ ~ "];" }
+
+field = { field_def+
+~ ":" ~ field_size ~ ";"~ "/* [" ~ ((field_pos_start ~ ":" ~ field_pos_end) | field_pos_only) ~ "]"
+~"," ~ field_access_mode ~ "," ~ "0"? ~ "x" ~ field_mask ~ end_l ~ "*/" ~ "\n"+ }
+field_def = _{("uint32_t" | "uint16_t") ~"\n"? ~ field_name}
+field_name = { (ASCII_ALPHANUMERIC | "_")+ }
+field_size = { ASCII_DIGIT+ }
+field_pos_only = { ASCII_DIGIT+ }
+field_pos_start = { ASCII_DIGIT+ }
+field_pos_end = { ASCII_DIGIT+ }
+field_mask = @{ (ASCII_HEX_DIGIT)* }
+end_l = _{"L"?}
+
+field_access_mode = { "None" | "w1p" | "w1c" | "r/w" | "rsvd" | "RWAC" | "RW1C" | "ROC" | "W0" | "WO" | "RO" | "RSVD" | "RW" | "rw" | "r" | "w" | "R" }
+
+WHITESPACE = _{ " " | "\t" }

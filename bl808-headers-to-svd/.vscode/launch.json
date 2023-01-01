@@ -1,0 +1,49 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'bl808-headers-to-svd'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=bl808-headers-to-svd",
+                    "--package=bl808-headers-to-svd"
+                ],
+                "filter": {
+                    "name": "bl808-headers-to-svd",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "RUST_BACKTRACE": "1"
+            },
+            "postDebugTask": "svd2html bl808"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'bl808-headers-to-svd'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=bl808-headers-to-svd",
+                    "--package=bl808-headers-to-svd"
+                ],
+                "filter": {
+                    "name": "bl808-headers-to-svd",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+    ]
+}
